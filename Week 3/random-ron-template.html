@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Random Ron</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<style type="json/css">
+		body {
+			margin: 0 auto;
+			max-width: 40em;
+			width: 88%;
+		}
+	</style>
+</head>
+
+<body>
+
+	<h1>Random Ron</h1>
+
+	<blockquote></blockquote>
+
+	<p>
+		<button id="get-quote">More Ron</button>
+	</p>
+
+
+	<script>
+		let quote = document.querySelector('blockquote');
+		let getNewQuote = document.querySelector('#get-quote');
+		let ronAPI = "https://ron-swanson-quotes.herokuapp.com/v2/quotes";
+
+		getQuote();
+
+		getNewQuote.addEventListener('click', getQuote);
+
+		function getQuote() {
+		fetch(ronAPI).then(function(response) {
+
+			// If the response is successful, get the JSON
+			if (response.ok) {
+				return response.json();
+			}
+
+			// Otherwise, throw an error
+			return response.json().then(function(json) {
+				throw json;
+			});
+
+		}).then(function(data) {
+			// This is the JSON from our response
+			quote.innerText = data
+		}).catch(function(error) {
+			// There was an error
+			console.warn(error);
+			quote.innerText = "Sorry, Ron's gone fishing."
+		});
+	}
+	</script>
+</body>
+
+</html>
