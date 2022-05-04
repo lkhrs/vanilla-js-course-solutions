@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Monsters!</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style type="text/css">
+		body {
+			margin: 0 auto;
+			max-width: 40em;
+			width: 88%;
+		}
+
+		/**
+			 * A simple grid layout
+			 */
+		.row {
+			display: grid;
+			grid-template-columns: auto auto auto;
+			text-align: center;
+		}
+
+		.grid {
+			min-height: 6em;
+			padding: 1em;
+		}
+
+		/**
+			 * Make sure images scale
+			 */
+		img {
+			height: auto;
+			max-width: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Monsters!</h1>
+	<button class="new-monster">Get a new set</button>
+	<div id="app"></div>
+	<footer>
+		<hr>
+		<p class="text-small text-muted">Icons by <a href="https://thenounproject.com/term/door/311732/">Jamie
+				Dickinson</a>, <a href="https://thenounproject.com/term/monster/184225/">Nicky Knicky</a>, <a
+				href="https://thenounproject.com/term/monster/1510400/">Alvaro Cabrera</a>, <a
+				href="https://thenounproject.com/term/monster/28460/">Eliricon</a>, <a
+				href="https://thenounproject.com/term/monster/82823/">April Yang</a>, <a
+				href="https://thenounproject.com/term/monster/1062009/">tk66</a>, <a
+				href="https://thenounproject.com/term/monster/24990/">Alex WaZa</a>, <a
+				href="https://thenounproject.com/term/monster/37212/">Husein Aziz</a>, <a
+				href="https://thenounproject.com/term/monster/2236082">iconcheese</a>, and <a
+				href="https://thenounproject.com/term/socks/38451/">Yazmin Alanis</a>.</p>
+	</footer>
+	<script>
+		let getNew = document.querySelector('.new-monster')
+		let app = document.querySelector('#app');
+		let monsters = [{
+			name: 'monster1',
+			alt: 'A yellow monster'
+		},
+		{
+			name: 'monster2',
+			alt: 'A yellow monster'
+		},
+		{
+			name: 'monster3',
+			alt: 'A green monster'
+		},
+		{
+			name: 'monster4',
+			alt: 'A red monster'
+		},
+		{
+			name: 'monster5',
+			alt: 'A green monster'
+		},
+		{
+			name: 'monster6',
+			alt: 'A green monster'
+		},
+		{
+			name: 'monster7',
+			alt: 'A purple monster'
+		},
+		{
+			name: 'monster8',
+			alt: 'A purple monster'
+		},
+		{
+			name: 'monster9',
+			alt: 'A blue monster'
+		},
+		{
+			name: 'monster10',
+			alt: 'A blue monster'
+		},
+		{
+			name: 'monster11',
+			alt: 'A gray monster'
+		},
+		{
+			name: 'sock',
+			alt: 'Pair of socks'
+		}
+		];
+
+		/**
+		 * Randomly shuffle an array
+		 * https://stackoverflow.com/a/2450976/1293256
+		 * @param  {Array} array The array to shuffle
+		 * @return {String}      The first item in the shuffled array
+		 */
+		function shuffle(array) {
+
+			let currentIndex = array.length;
+			let temporaryValue, randomIndex;
+
+			// While there remain elements to shuffle...
+			while (0 !== currentIndex) {
+				// Pick a remaining element...
+				randomIndex = Math.floor(Math.random() * currentIndex);
+				currentIndex -= 1;
+
+				// And swap it with the current element.
+				temporaryValue = array[currentIndex];
+				array[currentIndex] = array[randomIndex];
+				array[randomIndex] = temporaryValue;
+			}
+
+			return array;
+
+		}
+
+		// Set up the grid function
+		function monstergrid() {
+			// Shuffle the array
+
+			shuffle(monsters)
+			app.innerHTML =
+				`<div class="row">
+	${monsters.map(function(monster) {
+					return `<div class="grid">
+<img src="${monster.name}.svg" alt="${monster.alt}">
+</div>`
+				}).join('')}
+</div>`
+		}
+
+		// Wire up the button
+		getNew.addEventListener('click', function(event) {
+			monstergrid()
+		})
+
+		// Run on page load
+		monstergrid()
+	</script>
+</body>
+
+</html>
