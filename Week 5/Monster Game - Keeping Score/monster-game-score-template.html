@@ -170,6 +170,7 @@
 			let restartButton = document.createElement('button')
 			restartButton.textContent = "Play Again"
 			restartButton.id = "restart"
+			restartButton.ariaLive = 'polite'
 			restartButton.addEventListener('click', function(event) {
 				window.location.reload()
 			})
