@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Form Autosave - Form Status</title>
 
@@ -27,6 +28,7 @@
 		}
 	</style>
 </head>
+
 <body>
 
 	<h1>Form Autosave - Form Status</h1>
@@ -55,6 +57,9 @@
 		// Get the form element
 		let form = document.querySelector('#save-me');
 
+		// hold debouncer and existing notif
+		let debounce, activeNotif
+
 		// localStorage prefix
 		let prefix = 'autosave_fields';
 
@@ -63,7 +68,7 @@
 		 * @param  {FormData} data The FormData object to serialize
 		 * @return {String}        The serialized form data
 		 */
-		function serialize (data) {
+		function serialize(data) {
 			let obj = {};
 			for (let [key, value] of data) {
 				if (obj[key] !== undefined) {
@@ -82,27 +87,57 @@
 		 * Handle input events
 		 * @param  {Event} event The event object
 		 */
-		function inputHandler (event) {
+		function inputHandler(event) {
+			// Clear previous messages
+			clearTimeout(debounce);
 
-			// Serialize the form fields
-			let data = serialize(new FormData(form));
+			debounce = setTimeout(function() {
+				// Serialize the form fields
+				let data = serialize(new FormData(form));
 
-			// Stringify the object and save it to localStorage
-			localStorage.setItem(prefix, JSON.stringify(data));
+				// Stringify the object and save it to localStorage
+				localStorage.setItem(prefix, JSON.stringify(data));
 
+				// Show the message after save
+				showStatus();
+			}, 1000);
+		}
+
+		// Show status message
+		function showStatus() {
+			// Set up the notification element
+			let notification = document.createElement('div');
+			notification.setAttribute('aria-live', 'polite');
+			// Add to page
+			form.append(notification)
+			// Set up the message
+			setTimeout(function() {
+				notification.textContent = "Form saved ✅";
+				// remove previous notification
+				if (activeNotif) {
+					activeNotif.remove();
+				}
+				// set the notification we just displayed as the new active notif
+				activeNotif = notification;
+			}, 1);
+
+			// Remove the message after a delay
+			setTimeout(function() {
+				notification.remove();
+			}, 3000);
 		}
 
 		/**
 		 * Clear all of the saved fields from storage
 		 */
-		function clearStorage () {
+		function clearStorage() {
 			localStorage.removeItem(prefix);
 		}
 
 		/**
 		 * Load saved data from localStorage
 		 */
-		function loadSaved () {
+		function loadSaved() {
 
 			// Get saved data from localStorage
 			// If there's nothing saved, bail
@@ -128,4 +163,5 @@
 		form.addEventListener('submit', clearStorage);
 	</script>
 </body>
+
 </html>
